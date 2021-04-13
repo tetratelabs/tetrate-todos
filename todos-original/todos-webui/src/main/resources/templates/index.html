@@ -1,0 +1,110 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>Vue.js • Todo(s) WebUI</title>
+    <link rel="stylesheet" href="styles/fontawesome/css/all.css">
+    <link rel="stylesheet" href="styles/webui/normalize.css">
+    <link rel="stylesheet" href="styles/webui/fonts.css">
+    <link rel="stylesheet" href="styles/webui/index.css">
+    <style> [v-cloak] { display: none; } </style>
+</head>
+<body>
+<div id="todoapp" class="todoapp" v-cloak>
+    <div class="logos">
+        <img height="117" width="100" src="../static/img/logo.png" th:src="@{img/logo.png}"/>
+        <span th:text="'Tetrate Todos'"></span>
+    </div>
+    <!-- <div class="userinfo">
+        <span th:text="'Howdy, ' + ${username}"></span>
+    </div> -->
+    <div class="tabs">
+        <a v-on:click="activetab=1" v-bind:class="[ activetab === 1 ? 'active' : '' ]">Todo(s)</a>
+        <a v-on:click="activetab=2" v-bind:class="[ activetab === 2 ? 'active' : '' ]">Meta</a>
+        <a v-on:click="activetab=3" v-bind:class="[ activetab === 3 ? 'active' : '' ]">About</a>
+    </div>
+    <div v-if="activetab === 1" class="tabcontent">
+        <section>
+            <header>
+                <input id="new-todo" class="new-todo" autofocus autocomplete="off"
+                       th:placeholder="${placeholder}"
+                       maxlength="32"
+                       v-model="newTodo"
+                       @keyup.enter="addTodo">
+            </header>
+            <section class="main" v-show="todos.length">
+                <input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
+                <label for="toggle-all">Mark all as complete</label>
+                <ul class="todo-list">
+                    <li class="todo" v-for="todo in filteredTodos" :key="todo.id"
+                        :class="{completed: todo.complete, editing: todo == editedTodo}">
+                        <div class="view">
+                            <input class="toggle" type="checkbox" @click="toggleComplete(todo)">
+                            <label @dblclick="editTodo(todo)">{{todo.title}}</label>
+                            <button class="destroy" @click="removeTodo(todo)"></button>
+                        </div>
+                        <input class="edit" type="text" v-model="todo.title"
+                               v-todo-focus="todo == editedTodo"
+                               @blur="doneEdit(todo)"
+                               @keyup.enter="doneEdit(todo)"
+                               @keyup.esc="cancelEdit(todo)" maxlength="32">
+                    </li>
+                </ul>
+            </section>
+            <footer class="footer" v-show="todos.length">
+                <span class="todo-count">
+                    <strong v-text="remaining"></strong>
+                    {{pluralize('item', remaining)}} left
+                </span>
+                <ul class="filters">
+                    <li><a href="#/all" :class="{selected: visibility == 'all'}">All</a></li>
+                    <li><a href="#/active" :class="{selected: visibility == 'active'}">Active</a></li>
+                    <li><a href="#/completed" :class="{selected: visibility == 'completed'}">Completed</a></li>
+                </ul>
+            </footer>
+        </section>
+        <section class="about-content">
+            <div>
+                <label>Name: </label>{{buildInformation.name}}
+            </div>
+            <div>
+                <label>Version: </label>{{buildInformation.version}}
+            </div>
+        </section>
+    </div>
+    <div v-if="activetab === 2" class="tabcontent">
+        <section class="metadata" v-cloak>
+            <header>
+                <input id="filter-metadata" class="filter-metadata" autofocus autocomplete="off"
+                       placeholder="filter metadata"
+                       v-model="metaSearch">
+            </header>
+            <ul class="metadata-list">
+                <li class="meta" v-for="meta in filteredMetadata" :key="meta.property">
+                    <code class="highlight">
+                        <span class="property">{{meta.property}}</span><span class="eq">=</span><span class="value">{{meta.value}}</span>
+                    </code>
+                </li>
+            </ul>
+        </section>
+    </div>
+    <div v-if="activetab === 3" class="tabcontent">
+        <section class="about-content">
+            <div>
+                <label>Name: </label>{{buildInformation.name}}
+            </div>
+            <div>
+                <label>Version: </label>{{buildInformation.version}}
+            </div>
+        </section>
+    </div>
+</div>
+<script src="/webjars/vue/vue.min.js"></script>
+<script src="/webjars/vue-resource/dist/vue-resource.min.js"></script>
+<script src="/webjars/director/build/director.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

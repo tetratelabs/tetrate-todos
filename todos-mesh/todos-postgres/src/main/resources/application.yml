@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: todos-postgres-mesh
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: topsecret
+  hikari:
+    connectionTimeout: 20000
+    maximumPoolSize: 5
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

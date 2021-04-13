@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: todos-redis
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://todos-registry:8761/eureka/
+  instance:
+    preferIpAddress: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

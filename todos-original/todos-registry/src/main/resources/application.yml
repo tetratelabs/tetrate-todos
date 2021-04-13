@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: todos-registry
+server:
+  port: 8761
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  instance:
+    preferIpAddress: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: 'todos-webui'
+  thymeleaf:
+    cache: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://todos-registry:8761/eureka/
+  instance:
+    preferIpAddress: true
+todos:
+  webui:
+    placeholder: "Deploy a Service Mesh!"
+    username: Adam
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

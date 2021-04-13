@@ -1,0 +1,16 @@
+namespace: "todos"
+registry: "temp"
+redis:
+  serviceType: ClusterIP
+postgres:
+  serviceType: ClusterIP  
+  user: postgres
+  pwd: topsecret
+api:
+  serviceType: ClusterIP
+webui:
+  serviceType: ClusterIP  
+edge:
+  serviceType: LoadBalancer
+serviceRegistry:
+  serviceType: LoadBalancer

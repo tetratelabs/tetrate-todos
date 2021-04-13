@@ -1,0 +1,9 @@
+${AnsiColor.BRIGHT_CYAN}88888888888       8888888b.           8888888      8888888
+${AnsiColor.BRIGHT_CYAN}    888           888  "Y88b          888              888
+${AnsiColor.BRIGHT_CYAN}    888           888    888          888          ${AnsiColor.BRIGHT_GREEN}o${AnsiColor.BRIGHT_CYAN}   888
+${AnsiColor.BRIGHT_CYAN}    888   .d88b.  888    888  .d88b.  888         ${AnsiColor.BRIGHT_GREEN}o${AnsiColor.BRIGHT_CYAN}    888
+${AnsiColor.BRIGHT_CYAN}    888  d88""88b 888    888 d88""88b 888    ${AnsiColor.BRIGHT_GREEN}o v o${AnsiColor.BRIGHT_CYAN}     888
+${AnsiColor.BRIGHT_CYAN}    888  888  888 888    888 888  888 888     ${AnsiColor.BRIGHT_GREEN}o o${AnsiColor.BRIGHT_CYAN}      888
+${AnsiColor.BRIGHT_CYAN}    888  Y88..88P 888  .d88P Y88..88P 888      ${AnsiColor.BRIGHT_GREEN}o${AnsiColor.BRIGHT_CYAN}       888
+${AnsiColor.BRIGHT_CYAN}    888   "Y88P"  8888888P"   "Y88P"  8888888      8888888
+${AnsiColor.BRIGHT_GREEN}[${AnsiColor.BRIGHT_CYAN}app${AnsiColor.BRIGHT_RED}=${AnsiColor.BRIGHT_CYAN}${application.title}${AnsiColor.BRIGHT_GREEN}]${AnsiColor.BRIGHT_GREEN}[${AnsiColor.BRIGHT_CYAN}version${AnsiColor.BRIGHT_RED}=${AnsiColor.BRIGHT_CYAN}${application.version}${AnsiColor.BRIGHT_GREEN}]${AnsiColor.BRIGHT_GREEN}[${AnsiColor.BRIGHT_CYAN}spring-boot${AnsiColor.BRIGHT_RED}=${AnsiColor.BRIGHT_CYAN}${spring-boot.version}${AnsiColor.BRIGHT_GREEN}]

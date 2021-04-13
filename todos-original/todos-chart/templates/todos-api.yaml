@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todos-api
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: todos-api
+spec:
+  ports:
+    - port: 8080
+      name: http
+  selector:
+    app: todos-api
+  type: {{ .Values.api.serviceType }} 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todos-api
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todos-api
+  template:
+    metadata:
+      name: todos-api
+      labels:
+        app: todos-api
+    spec:
+      containers:
+        - image: {{ .Values.registry }}/todos-api:latest
+          name: todos-api
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080

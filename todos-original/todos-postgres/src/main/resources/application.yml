@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: todos-postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: topsecret
+  hikari:
+    connectionTimeout: 20000
+    maximumPoolSize: 5
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://todos-registry:8761/eureka/
+  instance:
+    preferIpAddress: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

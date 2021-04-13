@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: todos-webui-mesh
+  thymeleaf:
+    cache: false
+todos:
+  webui:
+    placeholder: "Deploy a Service Mesh!"
+    username: Adam
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
