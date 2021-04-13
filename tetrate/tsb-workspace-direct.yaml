@@ -1,0 +1,59 @@
+---
+apiversion: api.tsb.tetrate.io/v2
+kind: Workspace
+metadata:
+  tenant: tetrate
+  organization: tetrate
+  name: todos-workspace
+spec:
+  description: todos
+  displayName: todos
+  namespaceSelector:
+    names:
+      - "*/t1-todos"
+      - "*/todos"
+---      
+apiVersion: gateway.tsb.tetrate.io/v2
+kind: Group
+metadata:
+  tenant: tetrate
+  organization: tetrate
+  workspace: todos-workspace
+  name: todos-gateway
+spec:
+  displayName: todos-gateway
+  description: todos-gateway
+  namespaceSelector:
+    names:
+      - "*/todos"
+  configMode: DIRECT
+---      
+apiVersion: traffic.tsb.tetrate.io/v2
+kind: Group
+metadata:
+  tenant: tetrate
+  organization: tetrate
+  workspace: todos-workspace
+  name: todos-traffic
+spec:
+  displayName: todos-traffic
+  description: todos-traffic
+  namespaceSelector:
+    names:
+      - "*/todos"
+  configMode: DIRECT
+---      
+apiVersion: security.tsb.tetrate.io/v2
+kind: Group
+metadata:
+  tenant: tetrate
+  organization: tetrate
+  workspace: todos-workspace
+  name: todos-security
+spec:
+  displayName: todos-security
+  description: todos-security
+  namespaceSelector:
+    names:
+      - "*/todos"
+  configMode: BRIDGED

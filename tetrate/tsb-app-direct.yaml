@@ -1,0 +1,168 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: todos-gw
+  namespace: todos
+  annotations:
+    tsb.tetrate.io/organization: tetrate
+    tsb.tetrate.io/tenant: tetrate
+    tsb.tetrate.io/workspace: todos-workspace
+    tsb.tetrate.io/gatewayGroup: todos-gateway
+spec:
+  selector:
+    app: tsb-gateway-todos
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "todos.tetrate.zwickey.net"
+    tls:
+      credentialName: todos-certs
+      mode: SIMPLE
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "todos.tetrate.zwickey.net"
+    tls:
+      httpsRedirect: true # sends 301 redirect for http requests
+---            
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: todos-redis-vs
+  namespace: todos
+  annotations:
+    tsb.tetrate.io/organization: tetrate
+    tsb.tetrate.io/tenant: tetrate
+    tsb.tetrate.io/workspace: todos-workspace
+    tsb.tetrate.io/gatewayGroup: todos-gateway
+spec:
+  hosts:
+  - "todos.tetrate.zwickey.net"
+  gateways:
+  - todos-gw
+  http:
+  - match:
+    - uri:
+        prefix: /redis
+    rewrite:
+      uri: /  
+    route:
+    - destination:
+        host: "todos-redis.todos.svc.cluster.local"
+        port:
+          number: 8080
+---            
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: todos-postgres-vs
+  namespace: todos
+  annotations:
+    tsb.tetrate.io/organization: tetrate
+    tsb.tetrate.io/tenant: tetrate
+    tsb.tetrate.io/workspace: todos-workspace
+    tsb.tetrate.io/gatewayGroup: todos-gateway
+spec:
+  hosts:
+  - "todos.tetrate.zwickey.net"
+  gateways:
+  - todos-gw
+  http:
+  - match:
+    - uri:
+        prefix: /postgres
+    rewrite:
+      uri: /  
+    route:
+    - destination:
+        host: "todos-postgres.todos.svc.cluster.local"
+        port:
+          number: 8080
+---            
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: todos-api-vs
+  namespace: todos
+  annotations:
+    tsb.tetrate.io/organization: tetrate
+    tsb.tetrate.io/tenant: tetrate
+    tsb.tetrate.io/workspace: todos-workspace
+    tsb.tetrate.io/gatewayGroup: todos-gateway
+spec:
+  hosts:
+  - "todos.tetrate.zwickey.net"
+  gateways:
+  - todos-gw
+  http:
+  - match:
+    - uri:
+        prefix: /todos
+    rewrite:
+      uri: /  
+    route:
+    - destination:
+        host: todos-api
+        port:
+          number: 8080
+        subset: v1
+      weight: 50
+    - destination:
+        host: todos-api
+        port:
+          number: 8080
+        subset: v2
+      weight: 50  
+---         
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: todos-api-dr
+  namespace: todos
+  annotations:
+    tsb.tetrate.io/organization: tetrate
+    tsb.tetrate.io/tenant: tetrate
+    tsb.tetrate.io/workspace: todos-workspace
+    tsb.tetrate.io/trafficGroup: todos-traffic
+spec:
+  host: todos-api
+  subsets:
+  - name: v1   
+    labels:
+      app: todos-api
+      version: v1
+  - name: v2
+    labels:
+      app: todos-api
+      version: v2
+---         
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: todos-webui-vs
+  namespace: todos
+  annotations:
+    tsb.tetrate.io/organization: tetrate
+    tsb.tetrate.io/tenant: tetrate
+    tsb.tetrate.io/workspace: todos-workspace
+    tsb.tetrate.io/gatewayGroup: todos-gateway
+spec:
+  hosts:
+  - "todos.tetrate.zwickey.net"
+  gateways:
+  - todos-gw
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: "todos-webui.todos.svc.cluster.local"
+        port:
+          number: 8080

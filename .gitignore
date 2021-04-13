@@ -33,3 +33,7 @@ build/
 .vscode/
 
 scratch/
+
+.mvn/
+deploy.yaml
+deploy-mesh.yaml

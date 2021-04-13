@@ -1,0 +1,61 @@
+---
+apiVersion: gateway.tsb.tetrate.io/v2
+kind: IngressGateway
+metadata:
+  name: todos-gw
+  group: todos-gateway
+  workspace: todos-workspace
+  tenant: tetrate
+  organization: tetrate
+spec:
+  workloadSelector:
+    namespace: todos
+    labels:
+      app: tsb-gateway-todos
+  http:
+    - name: todos-gw-tls
+      port: 443
+      hostname: "todos.terate.zwickey.net"
+      tls:
+        mode: SIMPLE
+        secretName: todos-certs
+      routing:
+        rules:
+        - route:
+            host: "todos/todos-redis.todos.svc.cluster.local"
+            port: 8080
+          match:
+          - uri:
+              prefix: /redis
+          modify:
+            rewrite:
+              uri: /
+    # - name: todos-gw-http
+    #   port: 8080
+    #   hostname: "todos.terate.zwickey.net"
+    #   tls:
+    #     mode: DISABLED
+    #     # secretName: todos-certs
+    #   routing:
+    #     rules:
+    #     - route:
+    #         host: "todos/todos-redis.todos.svc.cluster.local"
+    #         port: 8080
+    #       match:
+    #       - uri:
+    #           prefix: /redis
+    #       modify:
+    #         rewrite:
+    #           uri: /
+          
+    # - name: details-gw
+    #   port: 9080
+    #   hostname: "details.mesh.local"
+    #   tls:
+    #     mode: SIMPLE
+    #     secretName: bookinfo-certs
+    #   routing:
+    #     rules:
+    #       - route:
+    #           host: "bookinfo/details.bookinfo.svc.cluster.local"
+    #           port: 9080
