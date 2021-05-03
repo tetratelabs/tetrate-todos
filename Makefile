@@ -7,16 +7,16 @@ all-mesh: clean test build-app build-images push-images-mesh deploy-mesh
 all-legacy: clean test build-app build-images push-images deploy
 
 clean:
-	mvn clean
+	./mvnw clean
 
 test:
-	mvn test
+	./mvnw test
 
 build-app:
-	mvn package -DskipTests=true
+	./mvnw package -DskipTests=true
 
 build-images: check-imagerepo
-	mvn spring-boot:build-image -DskipTests=true -Dregistry=$(image-repo)
+	./mvnw spring-boot:build-image -DskipTests=true -Dregistry=$(image-repo)
 
 push-images: check-imagerepo
 	docker push $(image-repo)/todos-edge:latest
@@ -39,14 +39,14 @@ deploy: check-imagerepo
 deploy-mesh: check-imagerepo
 	helm template tetrate-todos-mesh todos-mesh/todos-chart --set registry=$(image-repo) > deploy-mesh.yaml 
 	kubectl apply -f deploy-mesh.yaml
+	kubectl apply -f tetrate/istio.yaml
 
 restart: 
 	kubectl delete po -l app=todos-registry 
 	kubectl delete po -l app=todos-edge 
 	kubectl delete po -l app=todos-postgres
 	kubectl delete po -l app=todos-redis
-	kubectl delete po -l app=todos-api-v1
-	kubectl delete po -l app=todos-api-v2
+	kubectl delete po -l app=todos-api
 	kubectl delete po -l app=todos-webui
 
 check-imagerepo:

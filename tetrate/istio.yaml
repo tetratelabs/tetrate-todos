@@ -1,0 +1,103 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: todos-gw
+  namespace: todos
+spec:
+  selector:
+    app: istio-ingressgateway
+  servers:
+  # - port:
+  #     number: 443
+  #     name: https
+  #     protocol: HTTPS
+  #   hosts:
+  #   - "todos.tetrate.zwickey.net"
+  #   tls:
+  #     credentialName: todos-certs
+  #     mode: SIMPLE
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+    # tls:
+    #   httpsRedirect: true # sends 301 redirect for http requests
+---            
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: todos-vs
+  namespace: todos
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - todos-gw
+  http:
+  - match:
+    - uri:
+        prefix: /redis
+    rewrite:
+      uri: /  
+    route:
+    - destination:
+        host: "todos-redis.todos.svc.cluster.local"
+        port:
+          number: 8080
+  - match:
+    - uri:
+        prefix: /postgres
+    rewrite:
+      uri: /  
+    route:
+    - destination:
+        host: "todos-postgres.todos.svc.cluster.local"
+        port:
+          number: 8080
+  - match:
+    - uri:
+        prefix: /todos
+    rewrite:
+      uri: /  
+    route:
+    - destination:
+        host: todos-api
+        port:
+          number: 8080
+        subset: v1
+      weight: 50
+    - destination:
+        host: todos-api
+        port:
+          number: 8080
+        subset: v2
+      weight: 50  
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: "todos-webui.todos.svc.cluster.local"
+        port:
+          number: 8080
+---            
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: todos-api-dr
+  namespace: todos
+spec:
+  host: todos-api
+  subsets:
+  - name: v1   
+    labels:
+      app: todos-api
+      version: v1
+  - name: v2
+    labels:
+      app: todos-api
+      version: v2
+---         
