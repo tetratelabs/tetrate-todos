@@ -1,5 +1,5 @@
 # tetrate-todos
-Tetrate Todos is a sample app that demonstrates a migration from utlizing Spring Cloud modules for common cloud-native patterns, such as client-side load balancing, circuit breaking, service discovery, ect., to utilizng a Service Mesh.  
+Tetrate Todos is a sample app that demonstrates a migration from utlizing Spring Cloud modules for common cloud-native patterns, such as client-side load balancing, circuit breaking, service discovery, ect., to utilizng a Service Mesh.  You can view an [accompanying conference talk here](Kubecon+CloudNativeCon.pdf)
 
 Before Istio Service Mesh:
 ![alt text](images/before.png "Before")
