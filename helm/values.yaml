@@ -14,3 +14,5 @@ edge:
   serviceType: LoadBalancer
 serviceRegistry:
   serviceType: LoadBalancer
+admin:
+  serviceType: LoadBalancer

@@ -25,6 +25,7 @@ push-images: check-vars
 	docker push $(image-repo)/todos-redis:$(version)
 	docker push $(image-repo)/todos-webui:$(version)
 	docker push $(image-repo)/todos-registry:$(version)
+	docker push $(image-repo)/todos-admin:$(version)
 
 deploy: check-vars
 	helm template tetrate-todos helm --set registry=$(image-repo) --set version=$(version) > deploy.yaml 

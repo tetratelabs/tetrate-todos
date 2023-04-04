@@ -24,13 +24,15 @@
 		<module>todos/todos-edge</module>
 		<module>todos/todos-postgres</module>
 		<module>todos/todos-redis</module>
-		<module>todos/todos-registry</module>		
+		<module>todos/todos-registry</module>	
+		<module>todos/todos-admin</module>		
     </modules>
 
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.2</spring-cloud.version>
 		<spring-data.version>2022.0.3</spring-data.version>
+		<spring-boot-admin.version>3.0.2</spring-boot-admin.version>
 		<!-- <registry>gcr.io/abz-env</registry> -->
 	</properties>
 	<dependencyManagement>
@@ -49,6 +51,13 @@
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-dependencies</artifactId>
+				<version>${spring-boot-admin.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+				</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>

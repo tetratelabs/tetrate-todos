@@ -1,0 +1,17 @@
+# todos:
+#   api:
+#     limit: 1024
+spring:
+  application:
+    name: todos-admin
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://todos-registry:8761/eureka/
+  instance:
+    preferIpAddress: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
