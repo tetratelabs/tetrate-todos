@@ -196,6 +196,17 @@ public class TodosController {
         return saved;
     }
 
+    @GetMapping("/sleep/{delay}")
+    public void sleep(@PathVariable long delay) {
+        LOG.debug("Sleeping... " + delay);
+        try {
+            Thread.sleep(delay);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+    }
+
     private void throwIfOverLimit() {
         Todo[] cached = this.restTemplate().getForEntity(_cacheUrl, Todo[].class).getBody();
         if(cached.length >= _limit) {

@@ -83,6 +83,18 @@ spec:
         host: "todos-webui.todos.svc.cluster.local"
         port:
           number: 8080
+  - match:
+    - uri:
+        prefix: /sleep
+    rewrite:
+      uri: /sleep  
+    timeout: 5s
+    route:
+    - destination:
+        host: todos-api
+        port:
+          number: 8080
+        subset: v1
 ---            
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule

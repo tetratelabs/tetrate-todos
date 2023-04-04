@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.3</version>
+		<version>3.0.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	
@@ -28,11 +28,13 @@
 		<module>todos-mesh/todos-postgres</module>
 		<module>todos-original/todos-redis</module>
 		<module>todos-mesh/todos-redis</module>
+		<module>todos-original/todos-registry</module>		
     </modules>
 
 	<properties>
-		<java.version>11</java.version>
-		<spring-cloud.version>2020.0.1</spring-cloud.version>
+		<java.version>17</java.version>
+		<spring-cloud.version>2022.0.2</spring-cloud.version>
+		<spring-data.version>2022.0.3</spring-data.version>
 		<!-- <registry>gcr.io/abz-env</registry> -->
 	</properties>
 	<dependencyManagement>
@@ -44,16 +46,34 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-bom</artifactId>
+				<version>${spring-data.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-starter-client</artifactId>
+			<version>3.0.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-sleuth</artifactId>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-brave</artifactId>
+		  </dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>2.0</version>
 		</dependency>
 
 		<dependency>
