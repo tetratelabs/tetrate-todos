@@ -2,7 +2,7 @@
 
 all: all-mesh all-legacy
 
-all-mesh: clean test build-app build-images push-images-mesh deploy-mesh
+all-mesh: clean test build-app build-images deploy-mesh
 
 all-legacy: clean test build-app build-images push-images deploy
 
@@ -15,29 +15,23 @@ test:
 build-app:
 	./mvnw package -DskipTests=true
 
-build-images: check-imagerepo
-	./mvnw spring-boot:build-image -DskipTests=true -Dregistry=$(image-repo)
+build-images: check-vars
+	./mvnw spring-boot:build-image -DskipTests=true -Dregistry=$(image-repo) -Dtodos.version=$(version)
 
-push-images: check-imagerepo
-	docker push $(image-repo)/todos-edge:latest
-	docker push $(image-repo)/todos-api:latest
-	docker push $(image-repo)/todos-postgres:latest
-	docker push $(image-repo)/todos-redis:latest
-	docker push $(image-repo)/todos-webui:latest
-	docker push $(image-repo)/todos-registry:latest
+push-images: check-vars
+	docker push $(image-repo)/todos-edge:$(version)
+	docker push $(image-repo)/todos-api:$(version)
+	docker push $(image-repo)/todos-postgres:$(version)
+	docker push $(image-repo)/todos-redis:$(version)
+	docker push $(image-repo)/todos-webui:$(version)
+	docker push $(image-repo)/todos-registry:$(version)
 
-push-images-mesh: check-imagerepo
-	docker push $(image-repo)/todos-redis-mesh:latest
-	docker push $(image-repo)/todos-postgres-mesh:latest
-	docker push $(image-repo)/todos-api-mesh:latest
-	docker push $(image-repo)/todos-webui-mesh:latest
-
-deploy: check-imagerepo
-	helm template tetrate-todos todos-original/todos-chart/ --set registry=$(image-repo) > deploy.yaml 
+deploy: check-vars
+	helm template tetrate-todos helm --set registry=$(image-repo) --set version=$(version) > deploy.yaml 
 	kubectl apply -f deploy.yaml
 
-deploy-mesh: check-imagerepo
-	helm template tetrate-todos-mesh todos-mesh/todos-chart --set registry=$(image-repo) > deploy-mesh.yaml 
+deploy-mesh: check-vars
+	helm template tetrate-todos-mesh helm --set registry=$(image-repo) --set version=$(version) > deploy-mesh.yaml 
 	kubectl apply -f deploy-mesh.yaml
 	kubectl apply -f tetrate/istio.yaml
 
@@ -49,7 +43,11 @@ restart:
 	kubectl delete po -l app=todos-api
 	kubectl delete po -l app=todos-webui
 
-check-imagerepo:
+check-vars:
 ifndef image-repo
 	$(error image-repo is undefined)
+endif
+
+ifndef version
+	$(error version is undefined)
 endif

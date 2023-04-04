@@ -1,3 +1,5 @@
+service := todos-webui
+
 .PHONY: clean test build-app build-images push-images deploy
 
 all: clean test build-app build-images push-images deploy
@@ -11,18 +13,22 @@ test:
 build-app:
 	mvn package -DskipTests=true
 
-build-images: check-imagerepo
-	mvn spring-boot:build-image -DskipTests=true -Dregistry=$(image-repo)
+build-images: check-vars
+	mvn spring-boot:build-image -DskipTests=true -Dregistry=$(image-repo) -Dtodos.version=$(version)
 
-push-images: check-imagerepo
-	docker push $(image-repo)/todos-webui:latest
+push-images: check-vars
+	docker push $(image-repo)/$(service):$(version)
 
-deploy: check-imagerepo
-	helm template tetrate-todos ../todos-chart/ --set registry=$(image-repo) > ../deploy.yaml 
-	kubectl apply -f ../deploy.yaml
-	kubectl delete po -l app=todos-webui 
+deploy: check-vars
+	helm template tetrate-todos ../../helm/ --set registry=$(image-repo) --set version=$(version) > ../../deploy.yaml 
+	kubectl apply -f ../../deploy.yaml
+	kubectl delete po -l app=$(service)
 
-check-imagerepo:
+check-vars:
 ifndef image-repo
 	$(error image-repo is undefined)
+endif
+
+ifndef version
+	$(error version is undefined)
 endif

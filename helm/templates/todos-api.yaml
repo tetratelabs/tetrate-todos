@@ -31,7 +31,7 @@ spec:
         app: todos-api
     spec:
       containers:
-        - image: {{ .Values.registry }}/todos-api:latest
+        - image: {{ .Values.registry }}/todos-api:{{ .Values.version }}
           name: todos-api
           imagePullPolicy: Always
           ports:

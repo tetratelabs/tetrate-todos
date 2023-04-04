@@ -53,25 +53,4 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 	</dependencies>
-    <build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<image>
-						<name>${registry}/${project.artifactId}</name>
-						<publish>false</publish>
-					</image>
-				</configuration>
-                <executions>
-					<execution>
-						<goals>
-							<goal>build-info</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>

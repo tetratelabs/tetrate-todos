@@ -32,7 +32,7 @@ spec:
         app: todos-registry
     spec:
       containers:
-        - image: {{ .Values.registry }}/todos-registry:latest
+        - image: {{ .Values.registry }}/todos-registry:{{ .Values.version }}
           name: todos-registry
           imagePullPolicy: Always
           ports:

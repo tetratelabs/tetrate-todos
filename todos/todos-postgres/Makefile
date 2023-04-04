@@ -1,4 +1,4 @@
-service := todos-redis
+service := todos-postgres
 
 .PHONY: clean test build-app build-images push-images deploy
 

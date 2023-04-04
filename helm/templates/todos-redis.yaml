@@ -32,7 +32,7 @@ spec:
         app: todos-redis
     spec:
       containers:
-        - image: {{ .Values.registry }}/todos-redis:latest
+        - image: {{ .Values.registry }}/todos-redis:{{ .Values.version }}
           name: todos-redis
           imagePullPolicy: Always
           ports:

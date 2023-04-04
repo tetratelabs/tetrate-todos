@@ -19,16 +19,12 @@
 	</parent>
 	
 	<modules>
-        <module>todos-original/todos-webui</module>
-		<module>todos-mesh/todos-webui</module>
-		<module>todos-original/todos-api</module>
-		<module>todos-mesh/todos-api</module>
-		<module>todos-original/todos-edge</module>
-		<module>todos-original/todos-postgres</module>
-		<module>todos-mesh/todos-postgres</module>
-		<module>todos-original/todos-redis</module>
-		<module>todos-mesh/todos-redis</module>
-		<module>todos-original/todos-registry</module>		
+        <module>todos/todos-webui</module>
+		<module>todos/todos-api</module>
+		<module>todos/todos-edge</module>
+		<module>todos/todos-postgres</module>
+		<module>todos/todos-redis</module>
+		<module>todos/todos-registry</module>		
     </modules>
 
 	<properties>
@@ -90,10 +86,18 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
-						<name>${registry}/${project.artifactId}</name>
+						<name>${registry}/${project.artifactId}:${todos.version}</name>
 						<publish>false</publish>
 					</image>
 				</configuration>
+				<executions>
+					<execution>
+						<!-- <phase>package</phase> -->
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

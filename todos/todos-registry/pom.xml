@@ -25,19 +25,4 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
 	</dependencies>
-	
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<image>
-						<name>${registry}/${project.artifactId}</name>
-						<publish>false</publish>
-					</image>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 </project>

@@ -31,7 +31,7 @@ spec:
         app: todos-postgres
     spec:
       containers:
-        - image: {{ .Values.registry }}/todos-postgres:latest
+        - image: {{ .Values.registry }}/todos-postgres:{{ .Values.version }}
           name: todos-postgres
           imagePullPolicy: Always
           ports:

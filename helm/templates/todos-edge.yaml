@@ -31,7 +31,7 @@ spec:
         app: todos-edge
     spec:
       containers:
-      - image: {{ .Values.registry }}/todos-edge:latest
+      - image: {{ .Values.registry }}/todos-edge:{{ .Values.version }}
         name: todos-edge
         imagePullPolicy: Always
         ports:

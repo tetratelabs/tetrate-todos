@@ -31,7 +31,7 @@ spec:
         app: todos-webui
     spec:
       containers:
-        - image: {{ .Values.registry }}/todos-webui:latest
+        - image: {{ .Values.registry }}/todos-webui:{{ .Values.version }}
           name: todos-webui
           imagePullPolicy: Always
           ports:
